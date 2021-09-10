@@ -6,7 +6,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Rules.GetArray();
+            Rules.GetArray(args);
 
             var random = new Random();
             int compIndex, personIndex;
@@ -23,7 +23,6 @@ namespace ConsoleApp1
                 }
                 Console.WriteLine("___________________________________________\n\n" +
                     "0. Exit\n" +
-                    "00. New Game\n" +
                     "?. Help\n" +
                     "h. History\n" +
                     "___________________________________________");
@@ -32,7 +31,6 @@ namespace ConsoleApp1
                 {
                     if (option == "0") { break; }
                     else if (option == "?") { HelpTable.GetHelp(); }
-                    else if (option == "00") { Rules.GetArray(); }
                     else if (option == "h") { WhoWin.ShowPlayTable(); }
                     else if (Convert.ToInt32(option) <= Rules.words.Length)
                     {

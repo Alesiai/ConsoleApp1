@@ -18,11 +18,11 @@ namespace ConsoleApp1
         public Rules(string r) { RULES = r; }
 
         public static string[] words;
+       
 
-        public static void GetArray()
+        public static void GetArray(string[] str)
         {
-            string str = Console.ReadLine();
-            words = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            words = str;
             bool check = true;
 
             var grouped = words.GroupBy(i => i).Select(i => new { Count = i.Count() }).OrderByDescending(i => i.Count);
@@ -35,10 +35,13 @@ namespace ConsoleApp1
                 }
             }
 
-            if (words.Length % 2 != 1) { Console.WriteLine("Enter an uneven number of parameters."); Rules.GetArray(); }
-            else if (words.Length == 1) { Console.WriteLine("Enter more than one parameter."); Rules.GetArray(); }
-            else if (words.Length == 0) { Console.WriteLine("You didn't entered the parameters."); Rules.GetArray(); }
-            else if (check == false) { Console.WriteLine("Parameters names should not repeate."); Rules.GetArray(); }
+            if (words.Length % 2 != 1 || words.Length == 1 || words.Length == 0 || check == false) 
+            { 
+                Console.WriteLine("Enter correct parameters."); 
+                string consoleString = Console.ReadLine();
+                words = consoleString.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                Rules.GetArray(words); }
+            
         }
 
         public static void Play(int personInd, int computerInd)
@@ -61,20 +64,29 @@ namespace ConsoleApp1
             }
         }
 
-        public static int Play(int personInd, int computerInd, bool help)
+        public static string[] Play(int personInd, bool help)
         {
-            if (computerInd == personInd)
+            string str = Convert.ToString(personInd);
+            for (int computerInd = 1; computerInd <= Rules.words.Length; computerInd++)
             {
-                return 2;
-            }
-            else
-            {
-                int controlIndex = personInd + (words.Length / 2);
-                int controlIndex2 = controlIndex - words.Length;
 
-                return (controlIndex >= computerInd && personInd < computerInd) ||
-                    (controlIndex2 >= computerInd && personInd > computerInd) ? 1 : 0;
+                if (computerInd == personInd)
+                {
+                    str += " Draw";
+
+                }
+                else
+                {
+                    int controlIndex = personInd + (words.Length / 2);
+                    int controlIndex2 = controlIndex - words.Length;
+
+                    str += (controlIndex >= computerInd && personInd < computerInd) ||
+                        (controlIndex2 >= computerInd && personInd > computerInd) ? " Win" : " Lose";
+                }
             }
+
+            string[] mystring = str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return mystring;
         }
 
     }
