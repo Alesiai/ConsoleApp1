@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace ConsoleApp1
 {
@@ -20,7 +21,7 @@ namespace ConsoleApp1
         public static string[] words;
        
 
-        public static void GetArray(string[] str)
+        public static bool GetArray(string[] str)
         {
             words = str;
             bool check = true;
@@ -37,11 +38,12 @@ namespace ConsoleApp1
 
             if (words.Length % 2 != 1 || words.Length == 1 || words.Length == 0 || check == false) 
             { 
-                Console.WriteLine("Enter correct parameters."); 
-                string consoleString = Console.ReadLine();
-                words = consoleString.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                Rules.GetArray(words); }
+                Console.WriteLine("Enter correct parameters.");
+                return false;
+            }
             
+            return true; 
+
         }
 
         public static void Play(int personInd, int computerInd)

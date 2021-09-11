@@ -25,29 +25,36 @@ namespace ConsoleApp1
         }
         #endregion
 
-        public static string key;
 
         public GetHmac(string h, string k) { HMACK = h; HMACKey = k; }
 
         public static ObservableCollection<GetHmac> ListOfGetHmac = new ObservableCollection<GetHmac>();
+       
+        
+        public static byte[] key;
+        public static byte[] hash;
+        public static int moveIdx;
 
-        public static void HMACHASH()
+
+
+        public static int HMACHASH()
         {
-            var rnd = new Random();
+            byte[] array = new byte[16];
+            Span<byte> span = new Span<byte>(array);
+            RandomNumberGenerator.Fill(array);
+            key = array;
 
-            byte[] bKey = Encoding.Default.GetBytes(Convert.ToString(rnd.Next(0, 10)));
-            using (var hMac = new HMACSHA256(bKey))
-            {
-                byte[] bString = Encoding.Default.GetBytes(Convert.ToString(rnd.Next(0, 10)));
-                var bHash = hMac.ComputeHash(bString);
+            var hmac = new HMACSHA256(key);
 
-                var bKeyToHash = hMac.ComputeHash(bKey);
-                var getHmac = new GetHmac(FormatBArrayToString(bHash), FormatBArrayToString(bKeyToHash));
-                ListOfGetHmac.Add(getHmac);
-                key = FormatBArrayToString(bKeyToHash);
-                Console.WriteLine("\n\nHMAC: " + FormatBArrayToString(bHash));
+            moveIdx = RandomNumberGenerator.GetInt32(1, Rules.words.Length);
 
-            }
+            string str = Rules.words[moveIdx];
+
+            hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(str.ToCharArray()));
+
+            Console.WriteLine("\n\nHMAC: " + FormatBArrayToString(hash));
+
+            return moveIdx;
         }
 
         public static string HMACKEY(string hash)
@@ -62,7 +69,7 @@ namespace ConsoleApp1
             return "Not found HMACK HASH.";
         }
 
-        private static string FormatBArrayToString(byte[] array)
+        public static string FormatBArrayToString(byte[] array)
         {
             return BitConverter.ToString(array)
                     .Replace("-", string.Empty)

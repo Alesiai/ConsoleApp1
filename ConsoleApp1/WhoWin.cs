@@ -58,9 +58,9 @@ namespace ConsoleApp1
             }
 
             Console.WriteLine("Your move: " + person + "\nComputer move: " + computer + "\n" + result + "\nHMAC key: "
-                + GetHmac.key);
+                + GetHmac.FormatBArrayToString(GetHmac.key));
 
-            var whoWin = new WhoWin(person, computer, result, GetHmac.key);
+            var whoWin = new WhoWin(person, computer, result, GetHmac.FormatBArrayToString(GetHmac.key));
             ListOfWins.Add(whoWin);
         }
 

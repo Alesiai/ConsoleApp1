@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ConsoleApp1
 {
@@ -8,13 +11,12 @@ namespace ConsoleApp1
         {
             Rules.GetArray(args);
 
-            var random = new Random();
             int compIndex, personIndex;
             string option;
 
             while (true)
             {
-                GetHmac.HMACHASH();
+                compIndex = GetHmac.HMACHASH();
 
                 Console.WriteLine("\nChoose your option:\n");
                 for (int i = 0; i < Rules.words.Length; i++)
@@ -34,8 +36,10 @@ namespace ConsoleApp1
                     else if (option == "h") { WhoWin.ShowPlayTable(); }
                     else if (Convert.ToInt32(option) <= Rules.words.Length)
                     {
-                        compIndex = random.Next(1, Rules.words.Length);
                         personIndex = Convert.ToInt32(option);
+                        
+                        Console.WriteLine("Computer move: " + GetHmac.moveIdx);
+
                         Rules.Play(personIndex, compIndex);
                     }
                 }
